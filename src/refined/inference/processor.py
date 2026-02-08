@@ -495,7 +495,7 @@ class Refined(object):
                 'model_description_embeddings': {
                     # TODO: remove hard-coded size of entity sets
                     'wikipedia': os.path.join(model_name, 'precomputed_entity_descriptions_emb_wikipedia_6269457-300.np'),
-                    'wikidata': os.path.join(model_name, 'precomputed_entity_descriptions_emb_wikidata_33831487-300.np')
+                    'wikidata': os.path.join(model_name, 'precomputed_entity_descriptions_emb_wikidata_40490161-300.np')
                 }[entity_set],
             }
             # model_description_embeddings

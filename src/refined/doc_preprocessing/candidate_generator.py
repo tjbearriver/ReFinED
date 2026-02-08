@@ -69,7 +69,12 @@ class CandidateGeneratorExactMatch(CandidateGenerator):
 
         # surface is in pem
         # direct candidates - means the surface form was directly in pem lookup
-        direct_cands = self.pem[surface_form_norm]
+        pem_data = self.pem[surface_form_norm]
+        # Convert dict to list of tuples if needed (pem.lmdb stores dicts, but code expects list of tuples)
+        if isinstance(pem_data, dict):
+            direct_cands = sorted(pem_data.items(), key=lambda x: x[1], reverse=True)
+        else:
+            direct_cands = pem_data
 
         # add short names to person_coref for all people candidates
         person_short_names = surface_form_norm.split(" ")

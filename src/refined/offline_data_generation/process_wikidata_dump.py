@@ -232,7 +232,7 @@ def build_wikidata_lookups(args_override=None):
     if dump_path.endswith('.bz2'):
         pbzip2_check = subprocess.run(['which', 'pbzip2'], capture_output=True)
         if pbzip2_check.returncode == 0:
-            decompress_workers = 64
+            decompress_workers = 100
             print(f"Using pbzip2 with {decompress_workers} threads for decompression...")
             decompress_cmd = ['pbzip2', '-dc', f'-p{decompress_workers}', dump_path]
             decompress_proc = subprocess.Popen(decompress_cmd, stdout=subprocess.PIPE, bufsize=256*1024*1024)
@@ -246,7 +246,7 @@ def build_wikidata_lookups(args_override=None):
         raise ValueError(f"Unsupported format: {dump_path}")
 
     # Use fewer workers to avoid queue contention, but enough to keep CPU busy
-    num_workers = min(args.workers, 32)
+    num_workers = min(args.workers, 64)
     print(f"Using {num_workers} workers for JSON parsing (orjson)...")
     
     work_queue = Queue(maxsize=num_workers * 4)

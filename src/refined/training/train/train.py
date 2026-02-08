@@ -65,7 +65,7 @@ def main():
         wikidata_mapper=wikidata_mapper,
         dataset_path=wikipedia_dataset_file_path,
         batch_size=training_args.batch_size,
-        num_workers=8 * training_args.n_gpu,
+        num_workers=0,
         prefetch=100,  # add random number for each worker and have more than 2 workers to remove waiting
         mask=training_args.mask_prob,
         random_mask=training_args.mask_random_prob,
@@ -75,11 +75,8 @@ def main():
         sample_k_candidates=5,
         add_main_entity=True
     )
-    training_dataloader = DataLoader(dataset=training_dataset, batch_size=None, num_workers=8 * training_args.n_gpu,
-                                     # pin_memory=True if training_args.n_gpu == 1 else False,
+    training_dataloader = DataLoader(dataset=training_dataset, batch_size=None, num_workers=0,
                                      pin_memory=True,  # may break ddp and dp training
-                                     prefetch_factor=5,  # num_workers * prefetch_factor
-                                     persistent_workers=True  # persistent_workers means memory is stable across epochs
                                      )
     eval_docs: List[Doc] = list(iter(WikipediaDataset(
         start=0,
