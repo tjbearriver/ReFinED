@@ -1,3 +1,4 @@
+import glob
 import os
 from copy import deepcopy
 from typing import Dict, Tuple, Optional
@@ -128,6 +129,17 @@ class ResourceManager:
             resource_locations['local_filename'] = os.path.join(
                 self.data_dir, resource_locations["local_filename"]
             )
+
+        # Auto-detect qcode_to_class_tns file if the hardcoded one doesn't exist
+        if "qcode_idx_to_class_idx" in data_files:
+            expected_path = data_files["qcode_idx_to_class_idx"]["local_filename"]
+            if not os.path.exists(expected_path):
+                entity_set_to_subdir = {"wikidata": "wikidata_data", "wikipedia": "wikipedia_data"}
+                subdir = entity_set_to_subdir.get(self.entity_set, "")
+                pattern = os.path.join(self.data_dir, subdir, "qcode_to_class_tns_*.np")
+                matches = glob.glob(pattern)
+                if len(matches) == 1:
+                    data_files["qcode_idx_to_class_idx"]["local_filename"] = matches[0]
         return data_files
 
     def get_additional_data_files_info(self) -> Dict[str, Dict[str, str]]:

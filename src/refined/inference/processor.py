@@ -457,7 +457,7 @@ class Refined(object):
             debug: bool = False,
             device: Optional[str] = None,
             use_precomputed_descriptions: bool = True,
-            download_files: bool = True,
+            download_files: bool = False,
             return_titles: bool = True
     ):
         """
